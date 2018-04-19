@@ -65,13 +65,13 @@ hog_feat = True             # HOG features on or off
 ```
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-In the Search and Classify section of my IPython notebook, I trained a linear SVM.  First I extracted the HOG features from the car and notcar datasets.  Then I labeled the data, and split it into a training and test set (80/20 split).  I then created my Linear SVC classifier and fit the data.  With 6108 data points, the classifier took 20 seconds to train, and had a 98% accuracy on the test set.
+In the Search and Classify section of my IPython notebook, I trained an MLP Classifier.  First I extracted the HOG features from the car and notcar datasets.  Then I labeled the data, and split it into a training and test set (80/20 split).  I then created my MLP classifier and fit the data.  With 6108 data points, the classifier took 30 seconds to train, and had a 99% accuracy on the test set.
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I implemented my final sliding window search in the section "Hog Sub-sampling Window Search" in the `find_cars()` function.  My approach was to search three horizontal slices of the image with three different scales.  My slices were the y axis ranges: `(550, 750)`, `(450, 650)`, and `(350, 550)`.  So good coverage of the area of the image with cars in it, with some overlap.  My base window size was 64, and my scale factor for each slice in corresponding order was `[3.0, 2.25, 1.5]`.  I arrived at the numbers through experimentation and tuning, they seemed to be the boxes that best corresponded to the size of the vehicles in those slices.  Here is a picture of what sliding windows would look like across the whole image:
+I implemented my final sliding window search in the section "Hog Sub-sampling Window Search" in the `find_cars()` function.  My approach was to search three horizontal slices of the image with three different sets of scales.  My slices were the y axis ranges: `(550, 750)`, `(450, 650)`, and `(350, 550)`.  So good coverage of the area of the image with cars in it, with some overlap.  My base window size was 64, and my scale factors for each slice in corresponding order was `[[2.0, 1.9, 1.8],[1.6, 1.5, 1.4], [1.2, 1.1, 1.0]]`.  I arrived at the numbers through experimentation and tuning, they seemed to be the boxes that best corresponded to the size of the vehicles in those slices.  Here is a picture of what sliding windows would look like across the whole image:
 
 ![alt text][image3]
 
@@ -106,4 +106,4 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-A major problem that I struggled with was finding the right balance between having too many false positives, and not being able to detect the cars at all.  Heat map filtering over a history of multiple frames helped with this a lot.  I spent a lot of time tuning the number of frames to store and what to set the heatmap threshold.  It's still not perfect.  Another major pain point was detecting the white car.  My implementation still struggles with that.  I suspect that the dataset either doesn't have a lot of white cars, or that white makes it hard to extract HOG features.
+A major problem that I struggled with was finding the right balance between having too many false positives, and not being able to detect the cars at all.  Heat map filtering over a history of multiple frames helped with this a lot.  I spent a lot of time tuning the number of frames to store and what to set the heatmap threshold. 
