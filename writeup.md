@@ -65,19 +65,19 @@ hog_feat = True             # HOG features on or off
 ```
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-In the Search and Classify section of my IPython notebook, I trained an MLP Classifier.  First I extracted the HOG features from the car and notcar datasets.  Then I labeled the data, and split it into a training and test set (80/20 split).  I then created my MLP classifier and fit the data.  With 6108 data points, the classifier took 30 seconds to train, and had a 99% accuracy on the test set.
+In the "Search and Classify" section of my IPython notebook, I trained an MLP Classifier.  First I extracted the HOG features from the car and notcar datasets.  Then I labeled the data, and split it into a training and test set (80/20 split).  I then created my MLP classifier and fit the data.  With 6108 data points, the classifier took 30 seconds to train, and had a 98% accuracy on the test set.
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I implemented my final sliding window search in the section "Hog Sub-sampling Window Search" in the `find_cars()` function.  My approach was to search three horizontal slices of the image with three different sets of scales.  My slices were the y axis ranges: `(550, 750)`, `(450, 650)`, and `(350, 550)`.  So good coverage of the area of the image with cars in it, with some overlap.  My base window size was 64, and my scale factors for each slice in corresponding order was `[[2.0, 1.9, 1.8],[1.6, 1.5, 1.4], [1.2, 1.1, 1.0]]`.  I arrived at the numbers through experimentation and tuning, they seemed to be the boxes that best corresponded to the size of the vehicles in those slices.  Here is a picture of what sliding windows would look like across the whole image:
+I implemented my final sliding window search in the section "Search and Classify" in the `slide_window()` and `search_window()` function.  My base window size was 64, and my xy overlap was 50%.  I arrived at these numbers by experiementation and repeated tuning. Here is a picture of what sliding windows would look like across the whole image:
 
 ![alt text][image3]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on three scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  This tuning gave me some false positives, but I filtered those later and it was necessary to be able to see the cars as well.  Here is an example image:
+I searched using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  This tuning gave me some false positives, but I filtered those later and it was necessary to be able to see the cars as well.  Here is an example image:
 
 ![alt text][image4]
 ---
